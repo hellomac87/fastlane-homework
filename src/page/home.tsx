@@ -12,20 +12,37 @@ function Home() {
     });
   }
 
+  function duplicateFilter(products: Product[]) {
+    return products.reduce(function (acc: Product[], current) {
+      const hasCustomerName =
+        acc.findIndex(
+          ({ customerName }) => customerName === current.customerName
+        ) === -1;
+      if (hasCustomerName) {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
+  }
+
   if (!data) return <></>;
-  console.log(data.results.recommendProducts);
+
   return (
     <div>
       <ul>
-        {sortPrice(data.results.recommendProducts).map((product) => (
-          <li key={product.customerCode}>
-            <div>{product.customerName}</div>
-            <div>{product.comment}</div>
-            <div>{product.price}</div>
-            <img src={product.thumbnailImageUrl} alt={product.customerName} />
-            <br />
-          </li>
-        ))}
+        {sortPrice(duplicateFilter(data.results.recommendProducts)).map(
+          (product) => (
+            <li key={product.customerName}>
+              <div>{product.customerName}</div>
+              <div>{product.customerCode}</div>
+
+              <div>{product.comment}</div>
+              <div>{product.price}</div>
+              <img src={product.thumbnailImageUrl} alt={product.customerName} />
+              <br />
+            </li>
+          )
+        )}
       </ul>
     </div>
   );
