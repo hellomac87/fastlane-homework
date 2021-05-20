@@ -1,5 +1,6 @@
 export type Product = {
   locationName: string;
+  distance?: string;
   displayName: string;
   customerCode: string;
   rateScore: number;
@@ -7,6 +8,7 @@ export type Product = {
   thumbnailImageUrl: string;
   wishIcon: string;
   productCode: string;
+  cpmBudgetScore?: number;
   detailLinkUrl: string;
   currencyName: string;
   reviewCount: number;
