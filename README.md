@@ -37,4 +37,4 @@ $ yarn start
 - Library : ReactJS (Create-React-App)
 - Typesciprt
 - Style : Styled-Components
-- State Management : Redux(Redux-toolkit), hooks
+- State Management : Redux(Redux-toolkit), hooks.
