@@ -1,3 +1,7 @@
+import ListHead from "components/ListHead";
+import ListWrap from "components/ListWrap";
+import Loader from "components/Loader";
+import ProductItem from "components/ProductItem";
 import useFetch from "hooks/useFetch";
 import { Product, ProductsResponseType } from "store/types/products";
 
@@ -25,25 +29,27 @@ function Home() {
     }, []);
   }
 
+  if (status === "init") return <></>;
+  if (status === "fetching") return <Loader />;
   if (!data) return <></>;
 
   return (
     <div>
-      <ul>
+      <ListHead title={"추천"} />
+      <ListWrap>
         {sortPrice(duplicateFilter(data.results.recommendProducts)).map(
           (product) => (
-            <li key={product.customerName}>
-              <div>{product.customerName}</div>
-              <div>{product.customerCode}</div>
-
-              <div>{product.comment}</div>
-              <div>{product.price}</div>
-              <img src={product.thumbnailImageUrl} alt={product.customerName} />
-              <br />
-            </li>
+            <ProductItem key={product.customerName} product={product} />
           )
         )}
-      </ul>
+      </ListWrap>
+
+      <ListHead title={"신규"} />
+      <ListWrap>
+        {data.results.newProducts.map((product) => (
+          <ProductItem key={product.customerName} product={product} />
+        ))}
+      </ListWrap>
     </div>
   );
 }
