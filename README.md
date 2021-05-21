@@ -30,6 +30,8 @@ $ yarn start
 
 브라우저를 열어 `localhost:3000` 주소로 실행합니다.
 
+[netlify live](https://elastic-kowalevski-643b94.netlify.app/)
+
 ---
 
 ## stack
@@ -38,3 +40,9 @@ $ yarn start
 - Typesciprt
 - Style : Styled-Components
 - State Management : Redux(Redux-toolkit), hooks.
+
+## state management
+
+`localhost:3000` : fetchHooks 사용
+
+`localhost:3000/products` : redux 사용
