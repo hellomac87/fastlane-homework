@@ -1,20 +1,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import apiClient from "api";
 import type { AppDispatch, RootState } from "store";
-import { Product } from "store/types/products";
+import { ProductsResponseType } from "store/types/products";
 
 // Define a type for the slice state
 interface ProductsState {
   fetching: boolean;
   error: boolean;
-  items: Product[];
+  data: ProductsResponseType | null;
 }
 
 // Define the initial state using that type
 const initialState: ProductsState = {
   fetching: false,
   error: false,
-  items: [],
+  data: null,
 };
 
 export const productsSlice = createSlice({
@@ -25,7 +25,10 @@ export const productsSlice = createSlice({
     fetching: (state, action: PayloadAction) => {
       state.fetching = true;
     },
-    success: (state, action: PayloadAction) => {},
+    success: (state, action: PayloadAction<ProductsResponseType>) => {
+      state.data = action.payload;
+      state.fetching = false;
+    },
     failure: (state, action) => {
       state.error = true;
       state.fetching = false;
@@ -39,18 +42,13 @@ export const selectCharactors = (state: RootState) => state.products;
 
 export default productsSlice.reducer;
 
-export const fetchCharacters =
-  (page: number) => async (dispatch: AppDispatch) => {
-    dispatch(productsSlice.actions.fetching());
-    try {
-      const response = await apiClient.get("/", {
-        params: {
-          page,
-        },
-      });
+export const fetchProducts = () => async (dispatch: AppDispatch) => {
+  dispatch(productsSlice.actions.fetching());
+  try {
+    const { data }: { data: ProductsResponseType } = await apiClient.get("");
 
-      dispatch(productsSlice.actions.success());
-    } catch (e) {
-      dispatch(productsSlice.actions.failure);
-    }
-  };
+    dispatch(productsSlice.actions.success(data));
+  } catch (e) {
+    dispatch(productsSlice.actions.failure);
+  }
+};

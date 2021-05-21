@@ -4,13 +4,17 @@ import ListWrap from "components/ListWrap";
 import Loader from "components/Loader";
 import ProductItem from "components/ProductItem";
 import Error from "components/Error";
-import useFetch from "hooks/useFetch";
-import { Product, ProductsResponseType } from "store/types/products";
+import { Product } from "store/types/products";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
+import { useEffect } from "react";
+import { fetchProducts } from "store/slices/productsSlice";
 
 function ProductsPage() {
-  const { status, error, data } = useFetch<ProductsResponseType>(
-    `https://fe8eb658-e817-42b3-9c2b-8750cc0b33c4.mock.pstmn.io/latest/ios/products`
+  const dispatch = useDispatch();
+  const { fetching, error, data } = useSelector(
+    (state: RootState) => state.products
   );
 
   function sortByPrice(products: Product[]) {
@@ -32,8 +36,12 @@ function ProductsPage() {
     }, []);
   }
 
-  if (status === "fetching") return <Loader />;
-  if (status === "error") return <Error />;
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  if (fetching) return <Loader />;
+  if (error) return <Error />;
   if (!data) return <></>;
 
   return (
@@ -50,7 +58,7 @@ function ProductsPage() {
 
       <ListHead title={"신규"} />
       <ListWrap>
-        {sortByPrice(data.results.newProducts).map((product) => (
+        {sortByPrice([...data.results.newProducts]).map((product) => (
           <ProductItem key={product.customerName} product={product} />
         ))}
       </ListWrap>

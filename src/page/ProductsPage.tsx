@@ -33,7 +33,7 @@ function ProductsPage() {
   }
 
   if (status === "fetching") return <Loader />;
-  if (status === "error") return <Error />;
+  if (status === "error" || error) return <Error />;
   if (!data) return <></>;
 
   return (
@@ -50,7 +50,7 @@ function ProductsPage() {
 
       <ListHead title={"신규"} />
       <ListWrap>
-        {sortByPrice(data.results.newProducts).map((product) => (
+        {sortByPrice([...data.results.newProducts]).map((product) => (
           <ProductItem key={product.customerName} product={product} />
         ))}
       </ListWrap>
