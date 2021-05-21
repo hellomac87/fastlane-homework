@@ -46,9 +46,6 @@ const Container = styled.li`
   @media only screen and (min-width: 768px) {
     width: 49%;
   }
-  @media only screen and (min-width: 1280px) {
-    width: 32%;
-  }
 `;
 
 const ItemBox = styled.div`
